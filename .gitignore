@@ -1,0 +1,10 @@
+node_modules
+dist
+.env
+.env.local
+.expo
+coverage
+*.log
+apps/mobile/node_modules
+apps/api/node_modules
+apps/api/prisma/migrations
