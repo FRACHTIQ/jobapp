@@ -45,7 +45,20 @@ export async function jobsRoutes(app: FastifyInstance) {
 
     if (!userId) {
       const jobs = await prisma.job.findMany({ orderBy: { createdAt: "desc" } });
-      return jobs.map((job) => toJobDto({ ...job, isSaved: false }));
+      return jobs.map(
+        (job: {
+          id: string;
+          company: string;
+          role: string;
+          location: string;
+          employment: string;
+          experience: string;
+          salaryPerMonth: number;
+          colorHex: string;
+          description: string;
+          requirements: string[];
+        }) => toJobDto({ ...job, isSaved: false })
+      );
     }
 
     const jobs = await prisma.job.findMany({
@@ -58,7 +71,21 @@ export async function jobsRoutes(app: FastifyInstance) {
       }
     });
 
-    return jobs.map((job) => toJobDto({ ...job, isSaved: job.savedBy.length > 0 }));
+    return jobs.map(
+      (job: {
+        id: string;
+        company: string;
+        role: string;
+        location: string;
+        employment: string;
+        experience: string;
+        salaryPerMonth: number;
+        colorHex: string;
+        description: string;
+        requirements: string[];
+        savedBy: { id: string }[];
+      }) => toJobDto({ ...job, isSaved: job.savedBy.length > 0 })
+    );
   });
 
   app.get("/:id", { preHandler: [withOptionalAuth] }, async (request, reply) => {
